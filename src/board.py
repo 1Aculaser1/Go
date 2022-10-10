@@ -4,6 +4,7 @@ from stones import Stone
 import copy
 import os
 
+
 class Board:
     def __init__(self):
         # Store board state
@@ -28,7 +29,7 @@ class Board:
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         ]
         # Temporally store of stones\group of stones in a separate board for potential capturing
         self.capture_block = [
@@ -52,18 +53,18 @@ class Board:
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         ]
-        self.black_stone = 'b'
-        self.white_stone = 'w'
-        self.b_death_stone = 'bd'
-        self.w_death_stone = 'wd'
-        self.black_territory = 'bt'
-        self.white_territory = 'wt'
-        self.neutral_territory = 'n'
+        self.black_stone = "b"
+        self.white_stone = "w"
+        self.b_death_stone = "bd"
+        self.w_death_stone = "wd"
+        self.black_territory = "bt"
+        self.white_territory = "wt"
+        self.neutral_territory = "n"
         self.stone_placed = False
-        self.marker = 'x'
-        self.liberty = '+'
+        self.marker = "x"
+        self.liberty = "+"
         self.liberties = []
         self.white_to_move = False
         self.capture_board = True
@@ -71,12 +72,12 @@ class Board:
         self.capture_count = 0
         self.ko_list_counter = -1
         self.ko_list = []
-        self.board_img = pygame.image.load(os.path.join('images', 'board.png'))
-        self.stone_sound = pygame.mixer.Sound(os.path.join('sounds', 'place.wav'))
-        self.capture_sound = pygame.mixer.Sound(os.path.join('sounds', 'capture_single.wav'))
-        self.capture_sound_m = pygame.mixer.Sound(os.path.join('sounds', 'capture_many.wav'))
-        self.pass_sound = pygame.mixer.Sound(os.path.join('sounds', 'pass.wav'))
-        self.remove_sound = pygame.mixer.Sound(os.path.join('sounds', 'remove.wav'))
+        self.board_img = pygame.image.load(os.path.join("src/images", "board.png"))
+        self.stone_sound = pygame.mixer.Sound(os.path.join("src/sounds", "place.wav"))
+        self.capture_sound = pygame.mixer.Sound(os.path.join("src/sounds", "capture_single.wav"))
+        self.capture_sound_m = pygame.mixer.Sound(os.path.join("src/sounds", "capture_many.wav"))
+        self.pass_sound = pygame.mixer.Sound(os.path.join("src/sounds", "pass.wav"))
+        self.remove_sound = pygame.mixer.Sound(os.path.join("src/sounds", "remove.wav"))
         self.remove_sound_check = True
         self.pass_count = 0
         self.score_border_b = False
@@ -96,8 +97,17 @@ class Board:
         win.blit(self.board_img, (0, 0))
         for x in range(18):
             for y in range(18):
-                pygame.draw.rect(win, BLACK, (x * SQUARE_SIZE + 23, y *
-                                 SQUARE_SIZE + 23, SQUARE_SIZE + 2, SQUARE_SIZE + 2), 2)
+                pygame.draw.rect(
+                    win,
+                    BLACK,
+                    (
+                        x * SQUARE_SIZE + 23,
+                        y * SQUARE_SIZE + 23,
+                        SQUARE_SIZE + 2,
+                        SQUARE_SIZE + 2,
+                    ),
+                    2,
+                )
         # Draw the dots
         pygame.draw.circle(win, BLACK, (144, 144), 5)
         pygame.draw.circle(win, BLACK, (144, 624), 5)
@@ -223,7 +233,7 @@ class Board:
                         self.captued_black_stones += 1
                     self.captured_turn += 1
         if self.capture_count >= 2 and self.ko_list:
-                self.ko = self.ko_list[self.ko_list_counter - 1]
+            self.ko = self.ko_list[self.ko_list_counter - 1]
         else:
             self.ko = self.ko_board
         pass
@@ -314,7 +324,7 @@ class Board:
         self.game_end = True
 
     def calc_score_liberties(self, row, col):
-        if self.board[row][col] != 0 and self.board[row][col] != 'bd' and self.board[row][col] != 'wd':
+        if self.board[row][col] != 0 and self.board[row][col] != "bd" and self.board[row][col] != "wd":
             if self.board[row][col] == self.black_stone:
                 self.score_border_b = True
             elif self.board[row][col] == self.white_stone:
@@ -349,15 +359,15 @@ class Board:
             self.captued_white_stones -= 1
 
     def draw_circle(self, win, row, col, turn):
-            x = SQUARE_SIZE * (col) + SQUARE_SIZE // 2
-            y = SQUARE_SIZE * (row) + SQUARE_SIZE // 2
-            if turn == False:
-                pygame.draw.circle(win, BLACK, (x - 36, y - 36), 12, width = 3)
-            else:
-                pygame.draw.circle(win, WHITE, (x - 36, y - 36), 12, width = 3)
+        x = SQUARE_SIZE * (col) + SQUARE_SIZE // 2
+        y = SQUARE_SIZE * (row) + SQUARE_SIZE // 2
+        if turn == False:
+            pygame.draw.circle(win, BLACK, (x - 36, y - 36), 12, width=3)
+        else:
+            pygame.draw.circle(win, WHITE, (x - 36, y - 36), 12, width=3)
 
     # For debug
     def print_board(self, board):
-        print('\nBoard:\n')
+        print("\nBoard:\n")
         for row in board:
-            print(*row, sep=' ')
+            print(*row, sep=" ")
