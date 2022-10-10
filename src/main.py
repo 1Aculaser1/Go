@@ -7,7 +7,7 @@ from interface import Interface
 
 pygame.init()
 pygame.display.set_caption('Go by Gavril Marinov')
-logo = pygame.image.load(os.path.join('images', 'go_icon.png'))
+logo = pygame.image.load(os.path.join('src/images', 'go_icon.png'))
 pygame.display.set_icon(logo)
 
 # Transform mouse position into rows and columns of the board list

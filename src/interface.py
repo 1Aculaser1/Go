@@ -63,8 +63,8 @@ class Interface:
             'Exit Game', True, WHITE)
         # Win sound
         self.win_sound_check = True
-        self.black_wins_sound = pygame.mixer.Sound(os.path.join('sounds', 'black_wins.wav'))
-        self.white_wins_sound = pygame.mixer.Sound(os.path.join('sounds', 'white_wins.wav'))
+        self.black_wins_sound = pygame.mixer.Sound(os.path.join('src/sounds', 'black_wins.wav'))
+        self.white_wins_sound = pygame.mixer.Sound(os.path.join('src/sounds', 'white_wins.wav'))
 
     def draw_pass(self, win, pos, turn):
         if turn == False:
