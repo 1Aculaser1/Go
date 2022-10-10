@@ -1,17 +1,17 @@
 import pygame
 from constants import SQUARE_SIZE, RED
 
+
 class Stone:
-    
     def __init__(self, row, col, color):
-        self.row = row - 1 # - 1 because the ending rows/colums are 1 and not playable
-        self.col = col - 1 # - 1 because the ending rows/colums are 1 and not playable
+        self.row = row - 1  # - 1 because the ending rows/colums are 1 and not playable
+        self.col = col - 1  # - 1 because the ending rows/colums are 1 and not playable
         self.color = color
         self.x = 0
         self.y = 0
         self.calc_pos()
-        self.cross_font = pygame.font.SysFont('Consolas', 28)
-        self.cross_txt = self.cross_font.render('x', True, RED)
+        self.cross_font = pygame.font.SysFont("Consolas", 28)
+        self.cross_txt = self.cross_font.render("x", True, RED)
 
     def calc_pos(self):
         self.x = SQUARE_SIZE * (self.col) + SQUARE_SIZE // 2
