@@ -19,7 +19,7 @@ class Stone:
 
     def draw_stone(self, win):
         radius = 19
-        pygame.draw.circle(win, self.color, (self.x + 4, self.y + 4), radius)
+        pygame.draw.circle(win, self.color, (self.x + 4, self.y + 4), radius) 
 
     def draw_territory(self, win):
         pygame.draw.rect(win, self.color, (self.x - 4, self.y - 4, 16, 16))

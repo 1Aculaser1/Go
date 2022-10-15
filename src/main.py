@@ -1,9 +1,10 @@
 import pygame
 import os
 import sys
-from constants import SQUARE_SIZE, FPS, WIN
+from constants import SQUARE_SIZE, FPS, WIN, DARK_WHITE, BLACK
 from board import Board
 from interface import Interface
+from stones import Stone
 
 pygame.init()
 pygame.display.set_caption("Go by Gavril Marinov")
@@ -73,8 +74,8 @@ def main():
                     and interface.w_ready_pos_y <= pos[1] <= interface.w_ready_pos_y + interface.butt_height
                     and board.pass_count == 2
                 ):
-                    # If new game button is clicked
                     board.calc_score()
+                # If new game button is clicked
                 elif (
                     interface.pos_x <= pos[0] <= interface.pos_x + interface.new_game_width
                     and interface.new_game_pos_y <= pos[1] <= interface.new_game_pos_y + interface.butt_height
@@ -89,10 +90,20 @@ def main():
                     pygame.QUIT
                     sys.exit()
         board.draw_squares(WIN)
-        board.draw_stones(WIN)
-        if board.stone_placed == True:
-            board.draw_circle(WIN, board.pos_x, board.pos_y, board.white_to_move)
         interface.draw_quit(WIN, pos)
+        # Show the stone at mouse cursor
+        if 12 <= pos[0] <= 755 and 12 <= pos[1] <= 755 and board.pass_count < 2:
+            row, col = get_row_col_mouse(pos)
+            if board.white_to_move == False:
+                stone = Stone(row + 1, col + 1, BLACK)
+                stone.draw_stone(WIN)
+            else:
+                stone = Stone(row + 1, col + 1, DARK_WHITE)
+                stone.draw_stone(WIN)
+        board.draw_stones(WIN)
+        # Draw a circle for the last played stone
+        if board.stone_placed == True and board.pass_count < 1:
+            board.draw_circle(WIN, board.pos_x, board.pos_y, board.white_to_move)
         # Game in progress
         if board.pass_count < 2:
             interface.draw_players_turn(WIN, board.white_to_move)

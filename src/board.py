@@ -1,5 +1,5 @@
 import pygame
-from constants import BLACK, SQUARE_SIZE, DARK_GREY, DARK_WHITE, WHITE, WIN
+from constants import BLACK, SQUARE_SIZE, DARK_GREY, DARK_WHITE, WHITE
 from stones import Stone
 import copy
 import os
@@ -148,7 +148,7 @@ class Board:
         if self.capture_board == True:
             # Board capture prior player's turn
             self.ko_board = copy.deepcopy(self.board)
-        if self.board[row][col] != placed_stone and self.board[row][col] != opponent_stone:
+        if self.board[row][col] == 0:
             self.board[row][col] = placed_stone
             self.white_to_move = not self.white_to_move
             self.check_move(row, col, placed_stone, opponent_stone)
