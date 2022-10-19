@@ -236,7 +236,6 @@ class Board:
             self.ko = self.ko_list[self.ko_list_counter - 1]
         else:
             self.ko = self.ko_board
-        pass
         # If it's a Ko move, restore the stone
         if self.ko == self.board:
             for x in range(21):
