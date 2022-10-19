@@ -72,12 +72,6 @@ class Board:
         self.capture_count = 0
         self.ko_list_counter = -1
         self.ko_list = []
-        self.board_img = pygame.image.load(os.path.join("src/images", "board.png"))
-        self.stone_sound = pygame.mixer.Sound(os.path.join("src/sounds", "place.wav"))
-        self.capture_sound = pygame.mixer.Sound(os.path.join("src/sounds", "capture_single.wav"))
-        self.capture_sound_m = pygame.mixer.Sound(os.path.join("src/sounds", "capture_many.wav"))
-        self.pass_sound = pygame.mixer.Sound(os.path.join("src/sounds", "pass.wav"))
-        self.remove_sound = pygame.mixer.Sound(os.path.join("src/sounds", "remove.wav"))
         self.remove_sound_check = True
         self.pass_count = 0
         self.score_border_b = False
@@ -91,6 +85,13 @@ class Board:
         self.komi = 6.5
         self.start_time = None
         self.game_end = False
+        # Images and Sounds
+        self.board_img = pygame.image.load(os.path.join("src/images", "board.png"))
+        self.stone_sound = pygame.mixer.Sound(os.path.join("src/sounds", "place.wav"))
+        self.capture_sound = pygame.mixer.Sound(os.path.join("src/sounds", "capture_single.wav"))
+        self.capture_sound_m = pygame.mixer.Sound(os.path.join("src/sounds", "capture_many.wav"))
+        self.pass_sound = pygame.mixer.Sound(os.path.join("src/sounds", "pass.wav"))
+        self.remove_sound = pygame.mixer.Sound(os.path.join("src/sounds", "remove.wav"))
 
     def draw_squares(self, win):
         win.fill(DARK_GREY)
@@ -233,11 +234,11 @@ class Board:
                         self.captued_black_stones += 1
                     self.captured_turn += 1
         if self.capture_count >= 2 and self.ko_list:
-            self.ko = self.ko_list[self.ko_list_counter - 1]
+            ko = self.ko_list[self.ko_list_counter - 1]
         else:
-            self.ko = self.ko_board
+            ko = self.ko_board
         # If it's a Ko move, restore the stone
-        if self.ko == self.board:
+        if ko == self.board:
             for x in range(21):
                 for y in range(21):
                     stone = self.capture_block[x][y]
