@@ -2,8 +2,7 @@ import pygame
 from constants import BLACK, SQUARE_SIZE, DARK_GREY, DARK_WHITE, WHITE
 from stones import Stone
 import copy
-import os
-
+from interface import board_img, stone_sound, capture_sound, capture_sound_m, pass_sound
 
 class Board:
     def __init__(self):
@@ -85,17 +84,10 @@ class Board:
         self.komi = 6.5
         self.start_time = None
         self.game_end = False
-        # Images and Sounds
-        self.board_img = pygame.image.load(os.path.join("src/images", "board.png"))
-        self.stone_sound = pygame.mixer.Sound(os.path.join("src/sounds", "place.wav"))
-        self.capture_sound = pygame.mixer.Sound(os.path.join("src/sounds", "capture_single.wav"))
-        self.capture_sound_m = pygame.mixer.Sound(os.path.join("src/sounds", "capture_many.wav"))
-        self.pass_sound = pygame.mixer.Sound(os.path.join("src/sounds", "pass.wav"))
-        self.remove_sound = pygame.mixer.Sound(os.path.join("src/sounds", "remove.wav"))
 
     def draw_squares(self, win):
         win.fill(DARK_GREY)
-        win.blit(self.board_img, (0, 0))
+        win.blit(board_img, (0, 0))
         for x in range(18):
             for y in range(18):
                 pygame.draw.rect(
@@ -156,7 +148,7 @@ class Board:
 
     def pass_move(self):
         # Skip move if pass
-        self.pass_sound.play()
+        pass_sound.play()
         self.white_to_move = not self.white_to_move
         self.pass_count += 1
         if self.pass_count == 2:
@@ -187,7 +179,7 @@ class Board:
             self.ko_list_counter += 1
         # Reset ko board list and counter if stone is placed on the board
         if self.capture_board == True:
-            self.stone_sound.play()
+            stone_sound.play()
             self.capture_count = 0
             self.ko_list_counter = -1
             self.ko_list = []
@@ -259,9 +251,9 @@ class Board:
             self.pass_count = 0
             # Play capture sound
             if self.captured_turn == 1:
-                self.capture_sound.play()
+                capture_sound.play()
             else:
-                self.capture_sound_m.play()
+                capture_sound_m.play()
             self.captured_turn = 0
             self.pos_x = row
             self.pos_y = col

@@ -1,5 +1,20 @@
 import pygame
+import os
 from constants import WIN
+
+# Images and Sounds
+pygame.init()
+title_text = "Go by Gavril Marinov"
+main_logo = pygame.image.load(os.path.join("src/images", "main.png"))
+board_img = pygame.image.load(os.path.join("src/images", "board.png"))
+stone_sound = pygame.mixer.Sound(os.path.join("src/sounds", "place.wav"))
+capture_sound = pygame.mixer.Sound(os.path.join("src/sounds", "capture_single.wav"))
+capture_sound_m = pygame.mixer.Sound(os.path.join("src/sounds", "capture_many.wav"))
+pass_sound = pygame.mixer.Sound(os.path.join("src/sounds", "pass.wav"))
+remove_sound = pygame.mixer.Sound(os.path.join("src/sounds", "remove.wav"))
+black_wins_sound = pygame.mixer.Sound(os.path.join("src/sounds", "black_wins.wav"))
+white_wins_sound = pygame.mixer.Sound(os.path.join("src/sounds", "white_wins.wav"))
+logo = pygame.image.load(os.path.join("src/images", "go_icon.png"))
 
 class Button:
     def __init__(self, x, y, width, height, color):
@@ -30,4 +45,3 @@ class Text:
     
     def draw_text(self):
         WIN.blit(self.text, (self.x, self.y))
-    
