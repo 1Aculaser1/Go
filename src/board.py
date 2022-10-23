@@ -2,7 +2,7 @@ import pygame
 from constants import BLACK, SQUARE_SIZE, DARK_GREY, DARK_WHITE, WHITE
 from stones import Stone
 import copy
-from interface import board_img, stone_sound, capture_sound, capture_sound_m, pass_sound
+from interface import board_img, stone_sound, capture_sound, capture_sound_m, pass_sound, invalid_sound
 
 class Board:
     def __init__(self):
@@ -81,7 +81,6 @@ class Board:
         self.captued_white_stones = 0
         self.captued_black_stones = 0
         self.captured_turn = 0
-        self.komi = 6.5
         self.start_time = None
         self.game_end = False
 
@@ -169,6 +168,7 @@ class Board:
                     self.restore_board(opponent_stone)
         # Check if move is suicidial
         if self.suicidal_move(row, col, placed_stone) == True:
+            invalid_sound.play()
             self.white_to_move = not self.white_to_move
             self.capture_board = False
             self.start_time = pygame.time.get_ticks()
