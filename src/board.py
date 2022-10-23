@@ -83,6 +83,7 @@ class Board:
         self.captured_turn = 0
         self.start_time = None
         self.game_end = False
+        self.handicap_set = False
 
     def draw_squares(self, win):
         win.fill(DARK_GREY)
@@ -135,6 +136,63 @@ class Board:
                     field = Stone(x, y, BLACK)
                     field.draw_stone(win)
                     field.draw_cross(win)
+
+    def set_handicap(self, handicap):
+        if handicap == 2:
+            self.board[16][4] = self.black_stone # type: ignore
+            self.board[4][16] = self.black_stone # type: ignore
+        elif handicap == 3:
+            self.board[16][4] = self.black_stone # type: ignore
+            self.board[4][16] = self.black_stone # type: ignore
+            self.board[16][16] = self.black_stone # type: ignore
+        elif handicap == 4:
+            self.board[16][4] = self.black_stone # type: ignore
+            self.board[4][16] = self.black_stone # type: ignore
+            self.board[16][16] = self.black_stone # type: ignore
+            self.board[4][4] = self.black_stone # type: ignore
+        elif handicap == 5:
+            self.board[16][4] = self.black_stone # type: ignore
+            self.board[4][16] = self.black_stone # type: ignore
+            self.board[16][16] = self.black_stone # type: ignore
+            self.board[4][4] = self.black_stone # type: ignore
+            self.board[10][10] = self.black_stone # type: ignore
+        elif handicap == 6:
+            self.board[16][4] = self.black_stone # type: ignore
+            self.board[4][16] = self.black_stone # type: ignore
+            self.board[16][16] = self.black_stone # type: ignore
+            self.board[4][4] = self.black_stone # type: ignore
+            self.board[10][4] = self.black_stone # type: ignore
+            self.board[10][16] = self.black_stone # type: ignore
+        elif handicap == 7:
+            self.board[16][4] = self.black_stone # type: ignore
+            self.board[4][16] = self.black_stone # type: ignore
+            self.board[16][16] = self.black_stone # type: ignore
+            self.board[4][4] = self.black_stone # type: ignore
+            self.board[10][4] = self.black_stone # type: ignore
+            self.board[10][16] = self.black_stone # type: ignore
+            self.board[10][10] = self.black_stone # type: ignore
+        elif handicap == 8:
+            self.board[16][4] = self.black_stone # type: ignore
+            self.board[4][16] = self.black_stone # type: ignore
+            self.board[16][16] = self.black_stone # type: ignore
+            self.board[4][4] = self.black_stone # type: ignore
+            self.board[10][4] = self.black_stone # type: ignore
+            self.board[10][16] = self.black_stone # type: ignore
+            self.board[4][10] = self.black_stone # type: ignore
+            self.board[16][10] = self.black_stone # type: ignore
+        elif handicap == 9:
+            self.board[16][4] = self.black_stone # type: ignore
+            self.board[4][16] = self.black_stone # type: ignore
+            self.board[16][16] = self.black_stone # type: ignore
+            self.board[4][4] = self.black_stone # type: ignore
+            self.board[10][4] = self.black_stone # type: ignore
+            self.board[10][16] = self.black_stone # type: ignore
+            self.board[4][10] = self.black_stone # type: ignore
+            self.board[16][10] = self.black_stone # type: ignore
+            self.board[10][10] = self.black_stone # type: ignore
+        if handicap >= 2:
+            self.white_to_move = True
+        self.handicap_set = True
 
     def place_stone(self, row, col, placed_stone, opponent_stone):
         if self.capture_board == True:

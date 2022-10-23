@@ -8,6 +8,7 @@ from stones import Stone
 pygame.display.set_caption(title_text)
 pygame.display.set_icon(logo)
 new_game = False
+handicap = 0
 komi = 6.5
 
 # Transform mouse position into rows and columns of the board list
@@ -18,7 +19,7 @@ def get_row_col_mouse(pos):
     return row, col
 
 def main():
-    global new_game, komi
+    global new_game, komi, handicap
     settings = False
     run = True
     play_win_sound = True
@@ -30,6 +31,8 @@ def main():
         row, col = get_row_col_mouse(pos)
         if new_game == True:
             board.draw_squares(WIN)
+            if board.handicap_set != True:
+                board.set_handicap(handicap)
             # Show the stone at mouse cursor
             if 12 <= pos[0] <= 755 and 12 <= pos[1] <= 755 and board.pass_count < 2:
                 if board.white_to_move == False:
@@ -85,11 +88,16 @@ def main():
                     ready_txt = Text(801, 480, 'Ready', WHITE, 'font1')
             # Draw final score
             if board.game_end == True:
-                black_territory_txt = Text(801, 88, 'Territory: ' + str(board.black_territory_count), WHITE, 'font3')
-                black_total_score_txt = Text(801, 113, 'Total Score: ' + str(board.black_territory_count + board.captued_white_stones), WHITE, 'font4')
-                white_territory_txt = Text(801, 439, 'Territory: ' + str(board.white_territory_count), WHITE, 'font3')
-                white_total_score_txt = Text(801, 464, 'Total Score: ' + str(board.white_territory_count + board.captued_black_stones + komi), WHITE, 'font4')
-                if board.white_territory_count + board.captued_black_stones + komi > board.black_territory_count + board.captued_white_stones:
+                black_territory_txt = Text(801, 88, 'Territory: '
+                + str(board.black_territory_count), WHITE, 'font3')
+                black_total_score_txt = Text(801, 113, 'Total Score: '
+                + str(board.black_territory_count + board.captued_white_stones), WHITE, 'font4')
+                white_territory_txt = Text(801, 439, 'Territory: '
+                + str(board.white_territory_count), WHITE, 'font3')
+                white_total_score_txt = Text(801, 464, 'Total Score: '
+                + str(board.white_territory_count + board.captued_black_stones + komi), WHITE, 'font4')
+                if (board.white_territory_count + board.captued_black_stones + komi >
+                    board.black_territory_count + board.captued_white_stones):
                     wins_txt = Text(801, 355, 'White Wins!', GREEN, 'font1')
                     if play_win_sound == True:
                         white_wins_sound.play()
@@ -104,30 +112,37 @@ def main():
             white_player = Text(801, 355, 'White', WHITE, 'font1')
             komi_txt = Text(801, 415, f'Komi: {komi}', WHITE, 'font3')
             capture_count_w = Text(801, 390, 'Captured Stones: ' + str(board.captued_black_stones), WHITE, 'font3')
+            # Draw Exit Game
+            if 796 <= pos[0] <= 796 + 146 and 607 <= pos[1] <= 607 + 35:
+                exit_game_b = Field(796, 607, 146, 35, LIGHT_GREY)
+            else:
+                exit_game_b = Field(796, 607, 146, 35, DARK_GREY)
+            exit_game_txt = Text(801, 612, 'Exit Game', WHITE, 'font2')
 
-        # Draw initial start menu
+        # Draw initial start interface
         if new_game == False or settings == True:
             WIN.fill(DARK_GREY)
             WIN.blit(main_logo, (0, 0))
-        # Draw New Game
-        if 796 <= pos[0] <= 796 + 130 and 607 <= pos[1] <= 607 + 35:
-            new_game_b = Field(796, 607, 130, 35, LIGHT_GREY)
-        else:
-            new_game_b = Field(796, 607, 130, 35, DARK_GREY)
-        new_game_txt = Text(801, 612, 'New Game', WHITE, 'font2')
-        # Draw Exit Game
-        if 796 <= pos[0] <= 796 + 144 and 650 <= pos[1] <= 650 + 35:
-            quit_b = Field(796, 650, 144, 35, LIGHT_GREY)
-        else:
-            quit_b = Field(796, 650, 144, 35, DARK_GREY)
-        quit_txt = Text(801, 655, 'Exit Game', WHITE, 'font2')
-        # Draw Settings
-        if 796 <= pos[0] <= 796 + 130 and 693 <= pos[1] <= 693 + 35:
-            settings_b = Field(796, 693, 130, 35, LIGHT_GREY)
-        else:
-            settings_b = Field(796, 693, 130, 35, DARK_GREY)
-        options_txt = Text(801, 698, 'Settings', WHITE, 'font2')
-        if settings == True:
+        if settings == False and new_game == False:
+            # Draw New Game
+            if 796 <= pos[0] <= 796 + 130 and 607 <= pos[1] <= 607 + 35:
+                new_game_b = Field(796, 607, 130, 35, LIGHT_GREY)
+            else:
+                new_game_b = Field(796, 607, 130, 35, DARK_GREY)
+            new_game_txt = Text(801, 612, 'New Game', WHITE, 'font2')
+            # Draw Settings
+            if 796 <= pos[0] <= 796 + 130 and 650 <= pos[1] <= 650 + 35:
+                settings_b = Field(796, 650, 130, 35, LIGHT_GREY)
+            else:
+                settings_b = Field(796, 650, 130, 35, DARK_GREY)
+            settings_txt = Text(801, 655, 'Settings', WHITE, 'font2')
+            # Draw Quit
+            if 796 <= pos[0] <= 796 + 70 and 693 <= pos[1] <= 693 + 35:
+                quit_b = Field(796, 693, 70, 35, LIGHT_GREY)
+            else: 
+                quit_b = Field(796, 693, 70, 35, DARK_GREY)
+            quit_txt = Text(801, 698, 'Quit', WHITE, 'font2')
+        elif settings == True and new_game == False:
             # Draw OK
             if 796 <= pos[0] <= 796 + 40 and 393 <= pos[1] <= 393 + 35:
                 ok_b = Field(796, 393, 40, 35, LIGHT_GREY)
@@ -144,25 +159,37 @@ def main():
             else:
                 komi_down_b = Field(857, 349, 20, 20, DARK_GREY)
             komi_txt = Text(801, 350, f'Komi: <  {komi}  >', WHITE, 'font3')
+            # Draw Handicap Settings
+            if 956 <= pos[0] <= 956 + 20 and 324 <= pos[1] <= 324 + 20:
+                hand_up_b = Field(956, 324, 20, 20, LIGHT_GREY)
+            else:
+                hand_up_b = Field(920, 324, 20, 20, DARK_GREY)
+            if 897 <= pos[0] <= 897 + 20 and 324 <= pos[1] <= 324 + 20:
+                hand_down_b = Field(897, 324, 20, 20, LIGHT_GREY)
+            else:
+                hand_down_b = Field(897, 324, 20, 20, DARK_GREY)
+            hand_txt = Text(801, 325, f'Handicap: <  {handicap}  >', WHITE, 'font3')
+            # Draw Background settings
 
-        # In-Game Evnets
+        # In-Game Events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
-                # If New Game button is clicked
-                if new_game_b.get_loc(pos[0], pos[1]):
-                    new_game = True
-                    main()
-                # If settings button is clicked
-                if settings_b.get_loc(pos[0], pos[1]):
-                    settings = True
-                    break
-                # If exit game button is clicked
-                if quit_b.get_loc(pos[0], pos[1]):
-                    pygame.QUIT
-                    sys.exit()
+                if new_game == False:
+                    # If New Game button is clicked
+                    if new_game_b.get_loc(pos[0], pos[1]): # type: ignore
+                        new_game = True
+                        main()
+                    # If settings button is clicked
+                    if settings_b.get_loc(pos[0], pos[1]): # type: ignore
+                        settings = True
+                        break
+                    # If quit button is clicked
+                    if quit_b.get_loc(pos[0], pos[1]): # type: ignore
+                        pygame.QUIT
+                        sys.exit()
                 if new_game == True and settings == False:
                     # If stone is placed on the board
                     if 12 <= pos[0] <= 755 and 12 <= pos[1] <= 755 and board.pass_count < 2:
@@ -177,38 +204,32 @@ def main():
                     elif pass_b.get_loc(pos[0], pos[1]) and board.pass_count < 2: # type: ignore
                         board.pass_move()
                     # If a stone is clicked during removal phase
-                    elif (
-                        12 <= pos[0] <= 755 and 12 <= pos[1] <= 755 
-                        and board.pass_count == 2
-                    ):
+                    elif 12 <= pos[0] <= 755 and 12 <= pos[1] <= 755 and board.pass_count == 2:
                         board.remove_dead_stones(row + 1, col + 1, board.white_to_move)
                     # If ready button is clicked (black)
-                    elif (
-                        board.pass_count == 2 and 
-                        board.white_to_move == False and
-                        ready_b.get_loc(pos[0], pos[1]) # type: ignore
-                    ):
+                    elif board.pass_count == 2 and board.white_to_move == False and ready_b.get_loc(pos[0], pos[1]): # type: ignore
                         board.white_to_move = True
                     # If ready button is clicked (white)
-                    elif (
-                        board.pass_count == 2 and
-                        board.white_to_move == True and
-                        ready_b.get_loc(pos[0], pos[1]) # type: ignore
-                    ):
+                    elif board.pass_count == 2 and board.white_to_move == True and ready_b.get_loc(pos[0], pos[1]): # type: ignore
                         board.calc_score()
-                    # If new game button is clicked (during game)
-                    elif new_game_b.get_loc(pos[0], pos[1]):
-                        new_game = True
-                        main()
+                    elif exit_game_b.get_loc(pos[0], pos[1]): # type: ignore
+                        new_game = False
                 if settings == True:
                     # If OK button is clicked
                     if ok_b.get_loc(pos[0], pos[1]): # type: ignore
                         settings = False
                     # If Komi button is clicked
-                    elif komi_up_b.get_loc(pos[0], pos[1]): # type: ignore
+                    if komi_up_b.get_loc(pos[0], pos[1]): # type: ignore
                         komi += 1
-                    elif komi_down_b.get_loc(pos[0], pos[1]) and komi != 0.5: # type: ignore
+                    if komi_down_b.get_loc(pos[0], pos[1]) and komi != 0.5: # type: ignore
                         komi -= 1
+                    # If Handicap button is clocked
+                    if hand_up_b.get_loc(pos[0], pos[1]) and handicap != 9: # type: ignore
+                        handicap += 1
+                    if hand_down_b.get_loc(pos[0], pos[1]) and handicap != 0: # type: ignore
+                        handicap -= 1
+                    if handicap > 0:
+                        komi = 0.5
         pygame.display.update()
         
 main()
