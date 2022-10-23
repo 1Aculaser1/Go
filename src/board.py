@@ -2,10 +2,10 @@ import pygame
 from constants import BLACK, SQUARE_SIZE, DARK_GREY, DARK_WHITE, WHITE
 from stones import Stone
 import copy
-from interface import board_img, stone_sound, capture_sound, capture_sound_m, pass_sound, invalid_sound
+from interface import *
 
 class Board:
-    def __init__(self):
+    def __init__(self, image):
         # Store board state
         self.board = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -84,10 +84,16 @@ class Board:
         self.start_time = None
         self.game_end = False
         self.handicap_set = False
+        self.board_image_sel = image
 
     def draw_squares(self, win):
         win.fill(DARK_GREY)
-        win.blit(board_img, (0, 0))
+        if self.board_image_sel == 0:
+            win.blit(board_img, (0, 0))
+        elif self.board_image_sel == 1:
+            win.blit(board_img1, (0, 0))
+        else:
+            win.blit(board_img2, (0, 0))
         for x in range(18):
             for y in range(18):
                 pygame.draw.rect(

@@ -2,7 +2,7 @@ import pygame
 import sys
 from constants import SQUARE_SIZE, FPS, WIN, DARK_WHITE, BLACK, WHITE, DARK_GREY, LIGHT_GREY, RED, GREEN
 from board import Board
-from interface import Field, Text, remove_sound, black_wins_sound, white_wins_sound, logo, main_logo, title_text
+from interface import *
 from stones import Stone
 
 pygame.display.set_caption(title_text)
@@ -10,6 +10,7 @@ pygame.display.set_icon(logo)
 new_game = False
 handicap = 0
 komi = 6.5
+image_sel = 0
 
 # Transform mouse position into rows and columns of the board list
 def get_row_col_mouse(pos):
@@ -19,12 +20,12 @@ def get_row_col_mouse(pos):
     return row, col
 
 def main():
-    global new_game, komi, handicap
+    global new_game, komi, handicap, image_sel
     settings = False
     run = True
     play_win_sound = True
     clock = pygame.time.Clock()
-    board = Board()
+    board = Board(image_sel)
     while run:
         clock.tick(FPS)
         pos = pygame.mouse.get_pos()
@@ -81,7 +82,7 @@ def main():
                 else:
                     remove_highlight = Field(775, 350, 242, 115, LIGHT_GREY)
                     remove_txt = Text(780, 440, 'Remove the death stones', RED, 'font3')
-                    if 796 <= pos[0] <= 796 + 85 and 454 <= pos[1] <= 454 + 35:
+                    if 796 <= pos[0] <= 796 + 85 and 475 <= pos[1] <= 475 + 35:
                         ready_b = Field(796, 475, 85, 35, LIGHT_GREY)
                     else:
                         ready_b = Field(796, 475, 85, 35, DARK_GREY)
@@ -113,16 +114,21 @@ def main():
             komi_txt = Text(801, 415, f'Komi: {komi}', WHITE, 'font3')
             capture_count_w = Text(801, 390, 'Captured Stones: ' + str(board.captued_black_stones), WHITE, 'font3')
             # Draw Exit Game
-            if 796 <= pos[0] <= 796 + 146 and 607 <= pos[1] <= 607 + 35:
-                exit_game_b = Field(796, 607, 146, 35, LIGHT_GREY)
+            if 796 <= pos[0] <= 796 + 146 and 693 <= pos[1] <= 693 + 35:
+                exit_game_b = Field(796, 693, 146, 35, LIGHT_GREY)
             else:
-                exit_game_b = Field(796, 607, 146, 35, DARK_GREY)
-            exit_game_txt = Text(801, 612, 'Exit Game', WHITE, 'font2')
+                exit_game_b = Field(796, 693, 146, 35, DARK_GREY)
+            exit_game_txt = Text(801, 698, 'Exit Game', WHITE, 'font2')
 
         # Draw initial start interface
         if new_game == False or settings == True:
             WIN.fill(DARK_GREY)
-            WIN.blit(main_logo, (0, 0))
+            if image_sel == 0:
+                WIN.blit(main_logo, (0, 0))
+            elif image_sel == 1:
+                WIN.blit(main_logo1, (0, 0))
+            else:
+                WIN.blit(main_logo2, (0, 0))
         if settings == False and new_game == False:
             # Draw New Game
             if 796 <= pos[0] <= 796 + 130 and 607 <= pos[1] <= 607 + 35:
@@ -144,32 +150,42 @@ def main():
             quit_txt = Text(801, 698, 'Quit', WHITE, 'font2')
         elif settings == True and new_game == False:
             # Draw OK
-            if 796 <= pos[0] <= 796 + 40 and 393 <= pos[1] <= 393 + 35:
-                ok_b = Field(796, 393, 40, 35, LIGHT_GREY)
+            if 796 <= pos[0] <= 796 + 40 and 693 <= pos[1] <= 693 + 35:
+                ok_b = Field(796, 693, 40, 35, LIGHT_GREY)
             else:
-                ok_b = Field(796, 393, 40, 35, DARK_GREY)
-            ok_txt = Text(801, 398, 'OK', WHITE, 'font2')
+                ok_b = Field(796, 693, 40, 35, DARK_GREY)
+            ok_txt = Text(801, 698, 'OK', WHITE, 'font2')
             # Draw Komi Settings
-            if 936 <= pos[0] <= 936 + 20 and 349 <= pos[1] <= 349 + 20:
-                komi_up_b = Field(936, 349, 20, 20, LIGHT_GREY)
+            if 936 <= pos[0] <= 936 + 20 and 649 <= pos[1] <= 649 + 20:
+                komi_up_b = Field(936, 649, 20, 20, LIGHT_GREY)
             else:
-                komi_up_b = Field(936, 349, 20, 20, DARK_GREY)
-            if 857 <= pos[0] <= 857 + 20 and 349 <= pos[1] <= 349 + 20:
-                komi_down_b = Field(857, 349, 20, 20, LIGHT_GREY)
+                komi_up_b = Field(936, 649, 20, 20, DARK_GREY)
+            if 857 <= pos[0] <= 857 + 20 and 649 <= pos[1] <= 649 + 20:
+                komi_down_b = Field(857, 649, 20, 20, LIGHT_GREY)
             else:
-                komi_down_b = Field(857, 349, 20, 20, DARK_GREY)
-            komi_txt = Text(801, 350, f'Komi: <  {komi}  >', WHITE, 'font3')
+                komi_down_b = Field(857, 649, 20, 20, DARK_GREY)
+            komi_txt = Text(801, 650, f'Komi: <  {komi}  >', WHITE, 'font3')
             # Draw Handicap Settings
-            if 956 <= pos[0] <= 956 + 20 and 324 <= pos[1] <= 324 + 20:
-                hand_up_b = Field(956, 324, 20, 20, LIGHT_GREY)
+            if 956 <= pos[0] <= 956 + 20 and 624 <= pos[1] <= 624 + 20:
+                hand_up_b = Field(956, 624, 20, 20, LIGHT_GREY)
             else:
-                hand_up_b = Field(920, 324, 20, 20, DARK_GREY)
-            if 897 <= pos[0] <= 897 + 20 and 324 <= pos[1] <= 324 + 20:
-                hand_down_b = Field(897, 324, 20, 20, LIGHT_GREY)
+                hand_up_b = Field(920, 624, 20, 20, DARK_GREY)
+            if 897 <= pos[0] <= 897 + 20 and 624 <= pos[1] <= 624 + 20:
+                hand_down_b = Field(897, 624, 20, 20, LIGHT_GREY)
             else:
-                hand_down_b = Field(897, 324, 20, 20, DARK_GREY)
-            hand_txt = Text(801, 325, f'Handicap: <  {handicap}  >', WHITE, 'font3')
+                hand_down_b = Field(897, 624, 20, 20, DARK_GREY)
+            hand_txt = Text(801, 625, f'Handicap: <  {handicap}  >', WHITE, 'font3')
             # Draw Background settings
+            board_txt = Text(801, 30, f'Board:', WHITE, 'font3')
+            if image_sel == 0:
+                board_prev_highlight = Field(797, 54, 108, 108, RED)
+            elif image_sel == 1:
+                board_prev_highlight = Field(797, 171, 108, 108, RED)
+            else:
+                board_prev_highlight = Field(797, 288, 108, 108, RED)
+            WIN.blit(board_prev, (801, 58))
+            WIN.blit(board_prev1, (801, 175))
+            WIN.blit(board_prev2, (801, 292))
 
         # In-Game Events
         for event in pygame.event.get():
@@ -177,7 +193,7 @@ def main():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
-                if new_game == False:
+                if new_game == False and settings == False:
                     # If New Game button is clicked
                     if new_game_b.get_loc(pos[0], pos[1]): # type: ignore
                         new_game = True
@@ -190,7 +206,7 @@ def main():
                     if quit_b.get_loc(pos[0], pos[1]): # type: ignore
                         pygame.QUIT
                         sys.exit()
-                if new_game == True and settings == False:
+                elif new_game == True and settings == False:
                     # If stone is placed on the board
                     if 12 <= pos[0] <= 755 and 12 <= pos[1] <= 755 and board.pass_count < 2:
                         if board.white_to_move == False:
@@ -207,14 +223,27 @@ def main():
                     elif 12 <= pos[0] <= 755 and 12 <= pos[1] <= 755 and board.pass_count == 2:
                         board.remove_dead_stones(row + 1, col + 1, board.white_to_move)
                     # If ready button is clicked (black)
-                    elif board.pass_count == 2 and board.white_to_move == False and ready_b.get_loc(pos[0], pos[1]): # type: ignore
+                    elif (board.pass_count == 2 and 
+                        board.white_to_move == False and 
+                        ready_b.get_loc(pos[0], pos[1])): # type: ignore
                         board.white_to_move = True
                     # If ready button is clicked (white)
-                    elif board.pass_count == 2 and board.white_to_move == True and ready_b.get_loc(pos[0], pos[1]): # type: ignore
+                    elif (board.pass_count == 2 and 
+                        board.white_to_move == True and 
+                        ready_b.get_loc(pos[0], pos[1])): # type: ignore
                         board.calc_score()
                     elif exit_game_b.get_loc(pos[0], pos[1]): # type: ignore
                         new_game = False
-                if settings == True:
+                elif settings == True:
+                    # If board preview 1 is clicked
+                    if 801 <= pos[0] <= 801 + 100 and 58 <= pos[1] <= 58 + 100:
+                        image_sel = 0
+                    # If board preview 2 is clicked
+                    if 801 <= pos[0] <= 801 + 100 and 175 <= pos[1] <= 175 + 100:
+                        image_sel = 1
+                    # If board preview 3 is clicked
+                    if 801 <= pos[0] <= 801 + 100 and 292 <= pos[1] <= 292 + 100:
+                        image_sel = 2
                     # If OK button is clicked
                     if ok_b.get_loc(pos[0], pos[1]): # type: ignore
                         settings = False
