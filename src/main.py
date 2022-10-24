@@ -30,6 +30,15 @@ def main():
         clock.tick(FPS)
         pos = pygame.mouse.get_pos()
         row, col = get_row_col_mouse(pos)
+
+        # Draw game elements
+        WIN.fill(DARK_GREY)
+        if image_sel == 0:
+            WIN.blit(main_logo, (0, 0))
+        elif image_sel == 1:
+            WIN.blit(main_logo1, (0, 0))
+        else:
+            WIN.blit(main_logo2, (0, 0))
         if new_game == True:
             board.draw_squares(WIN)
             if board.handicap_set != True:
@@ -119,17 +128,7 @@ def main():
             else:
                 exit_game_b = Field(796, 693, 146, 35, DARK_GREY)
             exit_game_txt = Text(801, 698, 'Exit Game', WHITE, 'font2')
-
-        # Draw initial start interface
-        if new_game == False or settings == True:
-            WIN.fill(DARK_GREY)
-            if image_sel == 0:
-                WIN.blit(main_logo, (0, 0))
-            elif image_sel == 1:
-                WIN.blit(main_logo1, (0, 0))
-            else:
-                WIN.blit(main_logo2, (0, 0))
-        if settings == False and new_game == False:
+        elif new_game == False and settings == False:
             # Draw New Game
             if 796 <= pos[0] <= 796 + 130 and 607 <= pos[1] <= 607 + 35:
                 new_game_b = Field(796, 607, 130, 35, LIGHT_GREY)
@@ -148,7 +147,7 @@ def main():
             else: 
                 quit_b = Field(796, 693, 70, 35, DARK_GREY)
             quit_txt = Text(801, 698, 'Quit', WHITE, 'font2')
-        elif settings == True and new_game == False:
+        elif new_game == False and settings == True:
             # Draw OK
             if 796 <= pos[0] <= 796 + 40 and 693 <= pos[1] <= 693 + 35:
                 ok_b = Field(796, 693, 40, 35, LIGHT_GREY)
@@ -183,6 +182,7 @@ def main():
                 board_prev_highlight = Field(797, 171, 108, 108, RED)
             else:
                 board_prev_highlight = Field(797, 288, 108, 108, RED)
+            # Draw board preview images in Settings
             WIN.blit(board_prev, (801, 58))
             WIN.blit(board_prev1, (801, 175))
             WIN.blit(board_prev2, (801, 292))
@@ -199,11 +199,11 @@ def main():
                         new_game = True
                         main()
                     # If settings button is clicked
-                    if settings_b.get_loc(pos[0], pos[1]): # type: ignore
+                    elif settings_b.get_loc(pos[0], pos[1]): # type: ignore
                         settings = True
                         break
                     # If quit button is clicked
-                    if quit_b.get_loc(pos[0], pos[1]): # type: ignore
+                    elif quit_b.get_loc(pos[0], pos[1]): # type: ignore
                         pygame.QUIT
                         sys.exit()
                 elif new_game == True and settings == False:
@@ -239,23 +239,23 @@ def main():
                     if 801 <= pos[0] <= 801 + 100 and 58 <= pos[1] <= 58 + 100:
                         image_sel = 0
                     # If board preview 2 is clicked
-                    if 801 <= pos[0] <= 801 + 100 and 175 <= pos[1] <= 175 + 100:
+                    elif 801 <= pos[0] <= 801 + 100 and 175 <= pos[1] <= 175 + 100:
                         image_sel = 1
                     # If board preview 3 is clicked
-                    if 801 <= pos[0] <= 801 + 100 and 292 <= pos[1] <= 292 + 100:
+                    elif 801 <= pos[0] <= 801 + 100 and 292 <= pos[1] <= 292 + 100:
                         image_sel = 2
                     # If OK button is clicked
-                    if ok_b.get_loc(pos[0], pos[1]): # type: ignore
+                    elif ok_b.get_loc(pos[0], pos[1]): # type: ignore
                         settings = False
                     # If Komi button is clicked
-                    if komi_up_b.get_loc(pos[0], pos[1]): # type: ignore
+                    elif komi_up_b.get_loc(pos[0], pos[1]): # type: ignore
                         komi += 1
-                    if komi_down_b.get_loc(pos[0], pos[1]) and komi != 0.5: # type: ignore
+                    elif komi_down_b.get_loc(pos[0], pos[1]) and komi != 0.5: # type: ignore
                         komi -= 1
                     # If Handicap button is clocked
-                    if hand_up_b.get_loc(pos[0], pos[1]) and handicap != 9: # type: ignore
+                    elif hand_up_b.get_loc(pos[0], pos[1]) and handicap != 9: # type: ignore
                         handicap += 1
-                    if hand_down_b.get_loc(pos[0], pos[1]) and handicap != 0: # type: ignore
+                    elif hand_down_b.get_loc(pos[0], pos[1]) and handicap != 0: # type: ignore
                         handicap -= 1
                     if handicap > 0:
                         komi = 0.5
